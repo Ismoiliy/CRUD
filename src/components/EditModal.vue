@@ -1,14 +1,15 @@
 <template>
-  <div class="modal">
+  <div class="modal" v-if="editingModal">
     <div class="modal-content">
       <span class="close" @click="onClose">&times;</span>
       <h2>Редактирование</h2>
 
       <form-item
-        :item="editingItem"
-        :on-submit="onUpdate"
+        :data="editingItem"
+        @edit="onUpdate"
         submit-button-text="Сохранить"
       />
+      <button class="btn_cancel" @click="onClose">Отмена</button>
     </div>
   </div>
 </template>
@@ -39,7 +40,8 @@ export default {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
@@ -62,5 +64,19 @@ export default {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+.btn_cancel {
+  margin-top: 10px;
+  background-color: #ccc;
+  padding: 10px;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
 }
 </style>

@@ -1,32 +1,37 @@
 <template>
   <div id="app">
-    <h1>CRUD</h1>
+    <nav class="navbar">
+      <div class="container-fluid">
+        <span class="navbar-title">СRUD</span>
+      </div>
+    </nav>
+    <div class="main">
+      <form-item
+        v-if="editingItem"
+        :data="editingItem"
+        @edit="updateItem"
+        submit-button-text="Сохранить"
+      />
+      <form-item
+        v-else
+        :item="newItem"
+        @submit="createItem"
+        submit-button-text="Добавить"
+      />
 
-    <form-item
-      v-if="editingItem"
-      :data="editingItem"
-      @edit="updateItem"
-      submit-button-text="Сохранить"
-    />
-    <form-item
-      v-else
-      :item="newItem"
-      @submit="createItem"
-      submit-button-text="Добавить"
-    />
+      <item-list
+        :items="items"
+        @on-edit="openEditModal"
+        @on-delete="deleteItem"
+      />
 
-    <item-list
-      :items="items"
-      @on-edit="openEditModal"
-      @on-delete="deleteItem"
-    />
-
-    <edit-modal
-      :editing-item="editingItem"
-      :editing-modal="editingModal"
-      @on-update="saveEdit"
-      @on-close="closeEditModal"
-    />
+      <edit-modal
+        :editing-item="editingItem"
+        :editing-modal="editingModal"
+        @on-update="saveEdit"
+        @on-close="closeEditModal"
+      />
+    </div>
   </div>
 </template>
 
@@ -71,7 +76,7 @@ export default {
         });
     },
     createItem(items) {
-      console.log(items, 'salam alyekmom');
+      console.log(items, "salam aleykom");
       axios
         .post("http://94.158.54.194:9092/api/product", items)
         .then(() => {
@@ -89,10 +94,10 @@ export default {
         });
     },
     updateItem(item) {
-      let data = item
-      let date = new Date()
-      let day = date.get()
-      data.created_date = day
+      let data = item;
+      let date = new Date();
+      let day = date.getDate();
+      data.created_date = day;
       axios
         .put(`http://94.158.54.194:9092/api/product/`, data)
         .then(() => {
@@ -114,6 +119,7 @@ export default {
         });
     },
     openEditModal(item) {
+      console.log(item);
       this.editingItem = { ...item };
       this.editingModal = true;
     },
@@ -129,140 +135,31 @@ export default {
 </script>
 
 <style>
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
 #app {
   font-family: "Helvetica Neue", Arial, sans-serif;
-  color: #212b34;
-  margin-top: 60px;
-  background-color: rgba(0, 0, 0, 0.147);
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(30, 28, 31, 0);
-}
-
-.form {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 50px;
-  margin-bottom: 20px;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.form input,
-.form select {
-  padding: 10px;
-  border: 2px solid #3498db;
-  border-radius: 5px;
-  width: 100%;
-}
-
-.item-list {
-  list-style-type: none;
-  padding: 0;
-  margin-top: 20px;
-}
-
-.list-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.btn-container button {
-  margin-left: 5px;
-  padding: 5px 10px;
-}
-
-.btn_delete {
-  background-color: #f44336;
-  color: white;
-  border: 2px solid #f44336;
-  transition-duration: 0.5s;
-  border-radius: 5px;
-}
-
-.btn_delete:hover {
-  border: 2px solid #f44336;
-  color: black;
-  background-color: white;
-}
-
-.btn_edit {
-  background-color: white;
-  color: black;
-  transition-duration: 0.5s;
-  border: 2px solid #e4f806;
-  border-radius: 5px;
-}
-
-.btn_edit:hover {
-  color: black;
-  background-color: #e4f806;
-}
-
-.btn_add {
-  padding: 10px;
-  background-color: white;
-  color: #04aa6d;
-  border: 2px solid #04aa6d;
-  border-radius: 5px;
-  cursor: pointer;
-  transition-duration: 0.5s;
-  width: 100%;
-  margin-top: 10px;
-}
-
-.btn_add:hover {
-  color: white;
-  background-color: #04aa6d;
-  box-shadow: 7px 7px 10px -2px rgba(0, 0, 0, 0.75);
-}
-
-.btn_save {
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
+  color: #fff; 
+  background-color: #2b2b2b; 
   height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.7);
 }
 
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
+.navbar-title {
+  color: #A7B2B8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+.navbar {
+  font-size: 40px;
+  margin-bottom: 50px;
+  margin-left: 10px;
 }
 
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
 </style>
+
